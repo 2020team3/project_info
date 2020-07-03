@@ -228,7 +228,7 @@ root@u1:/work/siege-3.1.4#
         - http http://t3mileage:8080/mileages/6
 ![](777.jpg)
         - Kafka
-![](888.jpg)
+ ![](888.jpg)
 
 
 
