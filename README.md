@@ -8,7 +8,9 @@
   - [구현및테스트 - 동기식 호출](#5)
   - [구현및테스트 - 비동기식 호출](#6)
   - [구현및테스트 - Circuit Breaker](#7)   
-  - [구현및테스트 - 테스트 과정](#8)    
+  - [구현및테스트 - 테스트 과정](#8)   
+  - [운영 - CI/CD](#9)   
+
 ---
 ## <div id="1">서비스 시나리오</div>
   * 기능적 요구사항
@@ -229,6 +231,14 @@ root@u1:/work/siege-3.1.4#
 ![](images/777.jpg)
         - Kafka
 ![](images/888.jpg)
+
+## <div id="9">CI/CD</div>
+  * CI/CD
+    - kubenetes, kafka cloud 환경에 설치
+![](images/cloudenvironment.png)  
+    - GitHub Source와 AWS CodeBuild 연동
+        - github에 source code commit시 자동 빌드 및 배포
+![](images/codebuild.png)
 
 
 
