@@ -234,7 +234,7 @@ root@u1:/work/siege-3.1.4#
 
 ## <div id="9">CI/CD</div>
   * CI/CD
-    - kubenetes, kafka cloud 환경에 설치
+    - kubenetes, kafka : cloud 환경(AWS)에 설치
 ![](images/cloudenvironment.png)  
     - GitHub Source와 AWS CodeBuild 연동
         - github에 source code commit시 자동 빌드 및 배포
