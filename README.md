@@ -5,11 +5,10 @@
   - [분석/설계 - 구조](#2)
   - [분석/설계 - Event Storming 결과](#3)
   - [분석/설계 - 헥사고날 아키텍처 다이어그램 도출](#4)
-  - [구현및테스트 - DDD의 적용](#5)
-  - [구현및테스트 - 동기식 호출](#6)
-  - [구현및테스트 - 비동기식 호출](#7)
-  - [구현및테스트 - Circuit Breaker](#8)   
-  - [구현및테스트 - 테스트 과정](#9)    
+  - [구현및테스트 - 동기식 호출](#5)
+  - [구현및테스트 - 비동기식 호출](#6)
+  - [구현및테스트 - Circuit Breaker](#7)   
+  - [구현및테스트 - 테스트 과정](#8)    
 ---
 ## <div id="1">서비스 시나리오</div>
   * 기능적 요구사항
@@ -27,7 +26,7 @@
        - Payment시스템이 과중되면 결제를 잠시후에 하도록 유도한다. > Circuit breaker
 ---
 ## 분석/설계
-### <div id="2">분석/설계 - 구조</div>
+### <div id="2">분석/설계 - DDD구조</div>
 | No | Part | Port | gitHub | Memo |
 | :--------: | :--------: | :--------: | :-------- | :-------- |
 | 0 | Project Info | - | https://github.com/2020team3/project_info.git | Project Memo |
@@ -54,10 +53,7 @@
 ![](hexagonal.jpg)
 ---
 ## 구현 및 테스트
-### <div id="5">구현및테스트 - DDD 의 적용</div>
-
----
-### <div id="6">구현및테스트 - 동기식 호출</div>
+### <div id="5">구현및테스트 - 동기식 호출</div>
   * 동기식 발신
 ```
 RestTemplate restTemplate = VodPurchaseApplication.applicationContext.getBean(RestTemplate.class);
@@ -66,11 +62,22 @@ Payment payment = new Payment();
 payment.setPurchaseId(this.getPurchaseId());
 restTemplate.postForEntity(payUrl, payment, String.class);
 ```   
-  * 동기식 수신
+### <div id="6">구현및테스트 - 비동기식 호출</div>
+  * kafka 구성
+    - Microservice별로 아래와 같이 application.yml에 설정하였음
 ```
-
-```  
-### <div id="7">구현및테스트 - 비동기식 호출</div>
+kafka:
+  binder:
+    brokers: localhost:9092
+bindings:
+  input:
+    group: pay
+    destination: team3vod
+    contentType: application/json
+  output:
+    destination: team3vod
+    contentType: application/json
+```    
   * 비동기식 발신
 ```
 @PostUpdate
@@ -126,7 +133,10 @@ public void cancelOrder() {
       }
   }
 ```
-### <div id="8">구현및테스트 - Circuit Breaker</div>
+  * kafka Queue 내부
+![](444.jpg)
+---
+### <div id="7">구현및테스트 - Circuit Breaker</div>
   * Circuit Breaker 동작 확인
     - 아래와 같이 부하측정기 siege 명령으로 확인.
     - Windows 내부의 Ubuntu siege 명령은 아래와 같은 오류가 발생함. 결과만 확인 가능함
@@ -180,7 +190,7 @@ You can disable this log file notification by editing
 root@u1:/work/siege-3.1.4#
 ```  
 ---
-### <div id="9">테스트 과정</div>
+### <div id="8">테스트 과정</div>
   * Local 테스트
     1. vodList 조회
         - http localhost:8081/vodLists
@@ -189,10 +199,10 @@ root@u1:/work/siege-3.1.4#
     2. VOD 추가
         - http localhost:8081/vodLists vodName="GoGo"
 ![test_vodregist.png](test_vodregist.png)    
-    3. 아래 cloud 테스트와 같은 방식
+    3. 이하 아래 cloud 테스트와 같은 방식
 
   * Cloud 테스트
-    1. Http machine에 접속
+    1. Http machine에 접속하여 테스트 수행
        - kubectl exec -it httpie bin/bash
     2. VOD list 조회
        - http http://t3vodlist:8080/vodLists
@@ -201,9 +211,25 @@ root@u1:/work/siege-3.1.4#
        - http http://t3vodlist:8080/vodLists vodId=3 vodName="GoGo"
 ![](testc_vodregist.png)   
     4. VOD 구매
-       - http http://t3vodpurchase:8080/vodPurchases vodId=2 vodName=ToBusan
-![](testc_vodpurchase.png)  
+       - http http://t3vodpurchase:8080/vodPurchases vodId=1 vodName=Alive!
+![](111.jpg)
+       - http http://t3payment:8080/payments/6
+![](222.jpg)
+       - http http://t3mileage:8080/mileages/6
+![](333.jpg)
+       - Kafka
+![](444.jpg)
 
----
+    5. VOD 구매취소
+        - http PATCH http://t3vodpurchase:8080/vodPurchases/6 orderStatus=cancel
+![](555.jpg)
+        - http http://t3payment:8080/payments/6
+![](666.jpg)
+        - http http://t3mileage:8080/mileages/6
+![](777.jpg)
+        - Kafka
+![](888.jpg)
+
+
 
 # 끝.
