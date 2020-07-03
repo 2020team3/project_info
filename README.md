@@ -199,7 +199,7 @@ root@u1:/work/siege-3.1.4#
     2. VOD 추가
         - http localhost:8081/vodLists vodName="GoGo"
 ![test_vodregist.png](images/test_vodregist.png)    
-    3. 이하 아래 cloud 테스트와 같은 방식
+    3. 이하 생략. 아래 cloud 테스트와 같은 방식으로 테스트하였음.
 
   * Cloud 테스트
     1. Http machine에 접속하여 테스트 수행
@@ -228,11 +228,7 @@ root@u1:/work/siege-3.1.4#
         - http http://t3mileage:8080/mileages/6
 ![](images/777.jpg)
         - Kafka
-<<<<<<< HEAD
 ![](images/888.jpg)
-=======
-![](888.jpg)
->>>>>>> 95b9857630275445f4658b5438f39c29848c4c63
 
 
 
