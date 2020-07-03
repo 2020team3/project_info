@@ -38,19 +38,19 @@
 ---
 ### <div id="3">분석/설계 - Event Storming 결과</div>
   * 아래와 같이 도출되었음
-![MSA_architecture.png](MSA_architecture.png)
+![MSA_architecture.png](images/MSA_architecture.png)
   * 도메인 서열 분리
     - [ Core Domain ] : VOD Purchase - 없어서는 안될 핵심 서비스
     - [ Supporting Domain ] : VOD List, mileage - 경쟁력을 내기위한 서비스
     - [ General Domain ] : pay - 결제서비스
 
   * 1차 수정 후 아래와 같이 변경되었음
-![MSA_architecture_2.png](MSA_architecture_2.png)
+![MSA_architecture_2.png](images/MSA_architecture_2.png)
   * 2차 수정 후 아래와 같이 변경되었음
-![MSA_architecture_3.png](MSA_architecture_3.png)
+![MSA_architecture_3.png](images/MSA_architecture_3.png)
 ---
 ### <div id="4">분석/설계 - 헥사고날 아키텍처 다이어그램 도출</div>
-![](hexagonal.jpg)
+![](images/hexagonal.jpg)
 ---
 ## 구현 및 테스트
 ### <div id="5">구현및테스트 - 동기식 호출</div>
@@ -195,10 +195,10 @@ root@u1:/work/siege-3.1.4#
     1. vodList 조회
         - http localhost:8081/vodLists
         - 초기값으로 영화 2편이 있음
-![test_vodregist.png](test_vodlist.png)          
+![test_vodregist.png](images/test_vodlist.png)          
     2. VOD 추가
         - http localhost:8081/vodLists vodName="GoGo"
-![test_vodregist.png](test_vodregist.png)    
+![test_vodregist.png](images/test_vodregist.png)    
     3. 이하 아래 cloud 테스트와 같은 방식
 
   * Cloud 테스트
@@ -206,29 +206,29 @@ root@u1:/work/siege-3.1.4#
        - kubectl exec -it httpie bin/bash
     2. VOD list 조회
        - http http://t3vodlist:8080/vodLists
-![](testc_vodlist.png)    
+![](images/testc_vodlist.png)    
     3. VOD 추가
        - http http://t3vodlist:8080/vodLists vodId=3 vodName="GoGo"
-![](testc_vodregist.png)   
+![](images/testc_vodregist.png)   
     4. VOD 구매
        - http http://t3vodpurchase:8080/vodPurchases vodId=1 vodName=Alive!
-![](111.jpg)
+![](images/111.jpg)
        - http http://t3payment:8080/payments/6
-![](222.jpg)
+![](images/222.jpg)
        - http http://t3mileage:8080/mileages/6
-![](333.jpg)
+![](images/333.jpg)
        - Kafka
-![](444.jpg)
+![](images/444.jpg)
 
     5. VOD 구매취소
         - http PATCH http://t3vodpurchase:8080/vodPurchases/6 orderStatus=cancel
-![](555.jpg)
+![](images/555.jpg)
         - http http://t3payment:8080/payments/6
-![](666.jpg)
+![](images/666.jpg)
         - http http://t3mileage:8080/mileages/6
-![](777.jpg)
+![](images/777.jpg)
         - Kafka
- ![](888.jpg)
+![](images/888.jpg)
 
 
 
