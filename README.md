@@ -232,7 +232,7 @@ root@u1:/work/siege-3.1.4#
         - Kafka
 ![](images/888.jpg)
 
-## <div id="9">CI/CD</div>
+## <div id="9">운영</div>
   * CI/CD
     - kubenetes, kafka : cloud 환경(AWS)에 설치
 ![](images/cloudenvironment.png)  
